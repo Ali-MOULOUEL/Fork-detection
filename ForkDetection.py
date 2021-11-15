@@ -110,7 +110,7 @@ if __name__ == "__main__":
     len = 150
     distance = []
     detection = []
-    distance_data = []
+    distance_detection = []
 
     if(metadata["forklift_y"] == (-30 or 30)):
         ratio = 10
@@ -229,15 +229,16 @@ if __name__ == "__main__":
                 print("Longueur de la forklift: -----------------------------", longueur, "distance: ", xmin )
                 distance.append(xmin)
                 detection.append(True)
+                distance_detection.append(xmin)
+
             else:
                 distance.append(xmin)
                 detection.append(False)
         print("Distance: ", distance)
         # .npz writing example
         output_file = args.bag[:-4]+".npz"  # will create the .npz file along the bag file
-        distance_data.append(xmin)
-        print("data : ", distance_data)
-        np.savez_compressed(output_file, metadata=metadata, data=distance_data)
+        print("data : ", distance_detection)
+        np.savez_compressed(output_file, metadata=metadata, data=distance_detection)
         """            
         # .npz reading example
         fromfile = np.load('/home/project/formation_antonin/forkDetection/2021-06-02.08-51-36.1.npz', allow_pickle=True)
