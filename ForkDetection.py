@@ -112,27 +112,26 @@ if __name__ == "__main__":
     detection = []
     distance_detection = []
 
-    if(metadata["forklift_y"] == (-30 or 30)):
-        ratio = 10
-    else:
-        ratio = 30
-
-    yCorridor = (metadata["forklift_y"])/ratio
-
+    fly2cy = {0 : 0,                        #Dictionnary to choose the Y coordinate for BBox corriodor
+              30 : 3, 
+              -30 : -3, 
+              150 : 5, 
+              -150 : -5} 
+    yCorridor = fly2cy[metadata["forklift_y"]]
 
     if(metadata["forklift_y"] > 0):
-        boxAlphaXCoordinate = ((metadata["forklift_y"])/ratio - 4)
+        boxAlphaYCoordinate = (yCorridor - 4)
     else :
-        boxAlphaXCoordinate = ((metadata["forklift_y"])/ratio + 4)
+        boxAlphaYCoordinate = (yCorridor + 4)
         
-    boundingBoxAlpha = BoundingBox(center_point=(50,boxAlphaXCoordinate,0),
+    boundingBoxAlpha = BoundingBox(center_point=(50,boxAlphaYCoordinate,0),
                                    height=2,
                                    width=0.5,
                                    length=100,
                                    id='BoundingBox1')
 
     
-    boundingBoxCorridor = BoundingBox(center_point=(0,(metadata["forklift_y"])/ratio,2),
+    boundingBoxCorridor = BoundingBox(center_point=(0,yCorridor,2),
                                                     height=6,
                                                     width=10,
                                                     length=500,
@@ -153,9 +152,6 @@ if __name__ == "__main__":
                                                                  width=6.5,
                                                                  length=len,
                                                                  id='BoundingBox2')
-        print("(metadata[forklift_y])/ratio: ", (metadata["forklift_y"])/ratio)
-        print("forklift_y ", (metadata["forklift_y"]))
-
 
         pointcloud = msgToPointcloud(msg)
         publisher_acquisition.publish(msg)                          #Publish same pointcloud without processing
@@ -234,7 +230,7 @@ if __name__ == "__main__":
             else:
                 distance.append(xmin)
                 detection.append(False)
-        print("Distance: ", distance)
+        print("Distance_detection: ", distance_detection)
         # .npz writing example
         output_file = args.bag[:-4]+".npz"  # will create the .npz file along the bag file
         print("data : ", distance_detection)
