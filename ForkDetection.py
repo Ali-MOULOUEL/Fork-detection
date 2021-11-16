@@ -154,7 +154,7 @@ if __name__ == "__main__":
                                                                  id='BoundingBox2')
 
         pointcloud = msgToPointcloud(msg)
-        publisher_acquisition.publish(msg)                          #Publish same pointcloud without processing
+        publisher_acquisition.publish(msg)                                              #Publish same pointcloud without processing
 
         pointcloud = translation(pointcloud=pointcloud,
                                  x=2.076,
@@ -165,7 +165,7 @@ if __name__ == "__main__":
                                  pitch=np.degrees(0.0524 + alpha),
                                  roll=np.degrees(0.0))
 
-        publish_pointcloud(publisher=publisher_transformed,          #Publish pointcloud translated and rotated
+        publish_pointcloud(publisher=publisher_transformed,                             #Publish pointcloud translated and rotated
                             pointcloud=pointcloud[:,:4],
                             msg=msg)
 
@@ -174,22 +174,22 @@ if __name__ == "__main__":
                            pointcloud=pointcloudCorridor[:,:4],
                            msg=msg)
 
-        farAway = boundingBoxAlpha.filter(pointcloudCorridor)        #Filter the faraway points with another BBcorridor1
+        farAway = boundingBoxAlpha.filter(pointcloudCorridor)                           #Filter the faraway points with another BBcorridor1
         publish_pointcloud(publisher=publisher_alpha,
                            pointcloud=farAway[:,:4],
                            msg=msg)
                            
-        grandfilter = grandFilter(pointcloudCorridor, 0.18)                  #Filter again the point located on the BBcorridor to eliminate point which has height lower than 20cm
+        grandfilter = grandFilter(pointcloudCorridor, 0.18)                             #Filter again the point located on the BBcorridor to eliminate point which has height lower than 20cm
         publish_pointcloud(publisher=publisher_grandFilter,
                            pointcloud=grandfilter[:,:4],
                            msg=msg)
 
-        pointcloudEnclosingForklift = boundingBoxEnclosingForklift.filter(grandfilter)     #Filter the pointcloud to select only the point on the BBcorridor
+        pointcloudEnclosingForklift = boundingBoxEnclosingForklift.filter(grandfilter)   #Filter the pointcloud to select only the point on the BBcorridor
         publish_pointcloud(publisher=publisher_forklift,
                            pointcloud=pointcloudEnclosingForklift[:,:4],
                            msg=msg)
 
-        if(farAway.size > 0):                                        #Estimate the farAwayPoint (x coordinate) to calibrate the pitch with an alpha angle
+        if(farAway.size > 0):                                                            #Estimate the farAwayPoint (x coordinate) to calibrate the pitch with an alpha angle
             xmax = np.max([farAway[:,0]])
             farAwayPoint = farAway[farAway[:,0] == xmax][0]
             alpha += np.arctan(farAwayPoint[2] / farAwayPoint[0])
@@ -234,7 +234,7 @@ if __name__ == "__main__":
         # .npz writing example
         output_file = args.bag[:-4]+".npz"  # will create the .npz file along the bag file
         print("data : ", distance_detection)
-        np.savez_compressed(output_file, metadata=metadata, data=distance_detection)
+        np.savez_compressed(output_file, metadata=metadata, data=distance_detection, data1=distance, data2=detection)
         """            
         # .npz reading example
         fromfile = np.load('/home/project/formation_antonin/forkDetection/2021-06-02.08-51-36.1.npz', allow_pickle=True)
