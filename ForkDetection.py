@@ -233,7 +233,7 @@ if __name__ == "__main__":
         # .npz writing example
         output_file = args.bag[:-4]+".npz"  # will create the .npz file along the bag file
         print("data : ", forkDistance)
-        np.savez_compressed(output_file, metadata=metadata, data=forkDistance, data1=frontDistance, data2=detection)
+        np.savez_compressed(output_file, metadata=metadata, data=forkDistance, data1=forkliftDistance, data2=detectionsOfFork)
         """            
         # .npz reading example
         fromfile = np.load('/home/project/formation_antonin/forkDetection/2021-06-02.08-51-36.1.npz', allow_pickle=True)
