@@ -108,9 +108,9 @@ if __name__ == "__main__":
     alpha = 0
     xCorridor = 0
     len = 150
-    distance = []
-    detection = []
-    distance_detection = []
+    forkliftDistance = []
+    detectionsOfFork = []
+    forkDistance = []
 
     fly2cy = {0 : 0,                        #Dictionnary to choose the Y coordinate for BBox corriodor
               30 : 3, 
@@ -129,7 +129,6 @@ if __name__ == "__main__":
                                    width=0.5,
                                    length=100,
                                    id='BoundingBox1')
-
     
     boundingBoxCorridor = BoundingBox(center_point=(0,yCorridor,2),
                                                     height=6,
@@ -223,18 +222,18 @@ if __name__ == "__main__":
 
             if longueur > 4:
                 print("Longueur de la forklift: -----------------------------", longueur, "distance: ", xmin )
-                distance.append(xmin)
-                detection.append(True)
-                distance_detection.append(xmin)
+                forkliftDistance.append(xmin)
+                forkliftDistance.append(True)
+                forkDistance.append(xmin)
 
             else:
-                distance.append(xmin)
-                detection.append(False)
-        print("Distance_detection: ", distance_detection)
+                forkliftDistance.append(xmin)
+                forkliftDistance.append(False)
+        print("Distance_detection: ", forkDistance)
         # .npz writing example
         output_file = args.bag[:-4]+".npz"  # will create the .npz file along the bag file
-        print("data : ", distance_detection)
-        np.savez_compressed(output_file, metadata=metadata, data=distance_detection, data1=distance, data2=detection)
+        print("data : ", forkDistance)
+        np.savez_compressed(output_file, metadata=metadata, data=forkDistance, data1=frontDistance, data2=detection)
         """            
         # .npz reading example
         fromfile = np.load('/home/project/formation_antonin/forkDetection/2021-06-02.08-51-36.1.npz', allow_pickle=True)
@@ -245,5 +244,5 @@ if __name__ == "__main__":
         boundingBoxEnclosingForklift.vizualize()
         boundingBoxAlpha.vizualize()
 
-    plt.plot(distance, detection)
+    plt.plot(forkliftDistance, forkliftDistance)
     plt.show()

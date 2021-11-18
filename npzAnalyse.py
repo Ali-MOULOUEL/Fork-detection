@@ -8,8 +8,9 @@ import matplotlib.pyplot as plt
 from PointcloudPublisher import publish_pointcloud, rotation, translation
 from tf import TransformListener
 
-
-def singlePlot(npz, step):
+def singlePlot(npz, step, ax=None):
+    if ax is None:
+        fig, ax = plt.subplots()
     fromfile = np.load('/home/project/formation_antonin/bagFile/'+ npz, allow_pickle=True)
     bins = np.arange(0,max(fromfile['data1']), step)
     distanceForkDetected = fromfile['data1'][fromfile['data2']]
@@ -19,14 +20,15 @@ def singlePlot(npz, step):
     RationOfDetection = (serie1/(serie1+serie2))*100
     serie3,edges3 = np.histogram(RationOfDetection, bins=bins)
     xCoordinate = (edges3[:-1] + edges3[1:])/2
-    plt.bar(xCoordinate, RationOfDetection, width=step, edgecolor='black', color="green")
+    ax.bar(xCoordinate, RationOfDetection, width=step, edgecolor='black', color="green")
     metadata = fromfile["metadata"].tolist()
-    plt.title("Histogram of detection ratio for foklift_y : " + str(metadata["forklift_y"])+ " and fork_elevation : " + str(metadata["fork_elevation"]))
-    plt.xlabel("Distance (m)")
-    plt.ylabel("Detection ratio (%)")
-    plt.show()
+    ax.set_title("Histogram of detection ratio for foklift_y : " + str(metadata["forklift_y"])+ ", and fork_elevation : " + str(metadata["fork_elevation"])+".")
+    ax.set_xlabel("Distance (m)")
+    ax.set_ylabel("Detection ratio (%)")
 
-singlePlot('2021-06-02.08-51-36.1.npz',1)
-singlePlot('2021-06-02.08-57-11.3.npz',1)
+fig, axs = plt.subplots(2,sharex=True)
+singlePlot('2021-06-02.08-54-42.2.npz',1, axs[0])
+singlePlot('2021-06-02.09-01-11.4.npz',1, axs[1])
+plt.show()
 
 
